@@ -6,44 +6,58 @@
 /*   By: ppoti <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:21:09 by ppoti             #+#    #+#             */
-/*   Updated: 2023/07/16 11:08:58 by ppoti            ###   ########.fr       */
+/*   Updated: 2023/07/17 11:45:51 by ppoti            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void	my_mlx_pixel_put(t_fractol *frac, int x, int y, int color)
 {
 	char	*dst;
+	t_img	img;
 
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	img = frac->img;
+	dst = img.img_addr + (y * img.line_length + x * (img.bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
 }
 
-int	main(void)
+//! don't forget to delete
+void	loop_square(t_fractol *frac, int wid, int height, int color)
 {
-	void	*mlx;
-	void	*mlx_win;
-	t_data	img;
+	int	x;
+	int	y;
 
-	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 800, 600, "Hello world!");
-	img.img = mlx_new_image(mlx, 800, 600);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-
-	int y = 0;
-
-	// buffer all our pixel, then put_image_to_window
-	while (y < 200)
+	y = 0;
+	while (y < height)
 	{
-		int x = 0;
-		while (x < 300)
+		x = 0;
+		while (x < wid)
 		{
-			my_mlx_pixel_put(&img, x, y, 0x00FF0000);   // 250,250 บอกตำแหน่งแกน x y
+			my_mlx_pixel_put(frac, x, y, color);
 			x++;
 		}
 		y++;
 	}
-	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);   //! mlx establish connection to graphical system
-	mlx_loop(mlx);
+}
+
+void	go_to_map(t_fractol *frac)
+{
+	if (frac->map == 0)
+		mandelbrot(frac);
+}
+
+int	main(int ac, char **av)
+{
+	t_fractol	frac;
+
+	frac.mlx.size_x = 800;
+	frac.mlx.size_y = 800;
+	set_map(&frac, ac, av);
+	// printf("-> %d\n", frac.map);
+	go_to_map(&frac);
+	// loop_square(&frac, 200, 300, 0x00FF0000);
+	mlx_put_image_to_window(frac.mlx.mlx_ptr, frac.mlx.win_ptr, frac.img.img_ptr, 0, 0);
+	mlx_hook(frac.mlx.win_ptr, 2, (1L<<0), ft_keypress, &frac);
+	mlx_loop(frac.mlx.mlx_ptr);
 }
