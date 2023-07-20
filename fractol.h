@@ -6,7 +6,7 @@
 /*   By: ppoti <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:22:56 by ppoti             #+#    #+#             */
-/*   Updated: 2023/07/17 11:46:37 by ppoti            ###   ########.fr       */
+/*   Updated: 2023/07/20 23:47:41 by ppoti            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,14 @@
 # define SHAD_NEXT 0
 # define SHAD_PREV 2
 # define ORIGIN 4
+
+enum	e_mousedef {
+	mouse_left			= 1,
+	mouse_right			= 2,
+	mouse_middle		= 3,
+	mouse_middle_down	= 4,
+	mouse_middle_up		= 5
+};
 
 typedef struct	s_mlx {
 	void	*mlx_ptr;	// given after initialization
@@ -63,14 +71,24 @@ typedef struct s_fractol
 	t_img		img;
 	t_complx	complx;
 	int			map;  // mandebrot 0 or julia 1
-	float		x_ratio;
-	float		y_ratio;
+	int			x_ratio;
+	int			y_ratio;
+	int			num_iter;
+	int			*colors;
+	float		xmin;
+	float		xmax;
+	float		ymin;
+	float		ymax;
 }	t_fractol;
 
 void	my_mlx_pixel_put(t_fractol *frac, int x, int y, int color);
 void	set_map(t_fractol *frac, int ac, char **av);
 int		ft_keypress(int code, t_fractol *frac);
 void	mandelbrot(t_fractol *frac);
+
+int		mouse_event(int code, t_fractol *frac);
+
+
 
 
 
