@@ -6,7 +6,7 @@
 /*   By: ppoti <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:22:56 by ppoti             #+#    #+#             */
-/*   Updated: 2023/07/20 23:47:41 by ppoti            ###   ########.fr       */
+/*   Updated: 2023/07/25 12:14:32 by ppoti            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct s_fractol
 	t_img		img;
 	t_complx	complx;
 	int			map;  // mandebrot 0 or julia 1
+	int			density;
 	int			x_ratio;
 	int			y_ratio;
 	int			num_iter;
@@ -79,14 +80,20 @@ typedef struct s_fractol
 	float		xmax;
 	float		ymin;
 	float		ymax;
+	float		abs_cmp_x;
+	float		abs_cmp_y;
+	float		zoom;
+	float		new_half_w;
+	float		new_half_h;
 }	t_fractol;
 
 void	my_mlx_pixel_put(t_fractol *frac, int x, int y, int color);
 void	set_map(t_fractol *frac, int ac, char **av);
 int		ft_keypress(int code, t_fractol *frac);
 void	mandelbrot(t_fractol *frac);
+void	random_complx(t_fractol *frac, float xmin, float ymin);
 
-int		mouse_event(int code, t_fractol *frac);
+int		zoom(int code, int x, int y, t_fractol *frac);
 
 
 

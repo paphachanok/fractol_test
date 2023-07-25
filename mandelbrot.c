@@ -6,7 +6,7 @@
 /*   By: ppoti <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 01:13:02 by ppoti             #+#    #+#             */
-/*   Updated: 2023/07/20 23:44:07 by ppoti            ###   ########.fr       */
+/*   Updated: 2023/07/25 13:22:28 by ppoti            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void	random_complx(t_fractol *frac, float xmin, float ymin)
 		while (x < frac->mlx.size_x)
 		{
 			frac->complx.real = xmin + re;
-
 			mb_shading(frac, x, y);
 			re += frac->complx.real_ratio;
 			x += frac->x_ratio;
@@ -67,25 +66,22 @@ void	random_complx(t_fractol *frac, float xmin, float ymin)
 		im += frac->complx.imag_ratio;
 		y += frac->y_ratio;
 	}
-	// printf("complx_img should be 1.5 => %f\n", frac->complx.imag);
-	// printf("y should be 800 => %d\n", y);
 }
 
 void	mandelbrot(t_fractol *frac)
 {
-	int		density;
-
 	frac->xmin = -2;
 	frac->xmax = 2;
 	frac->ymin = -2;
 	frac->ymax = 2;
-	density = 800;
+	frac->density = 800;
 	frac->num_iter = 30;
+	frac->zoom = 1;
 	// 1. random x, y, density
 	//  give them real_ratio, imag_ratio, x_ratio, y_ratio
-	frac->x_ratio = floor(frac->mlx.size_x / density);  //! อาจจะต้องกลับมาแก้เป็น round()
-	frac->y_ratio = floor(frac->mlx.size_y / density);
-	frac->complx.real_ratio = fabs(frac->xmax - frac->xmin) / density;
-	frac->complx.imag_ratio = fabs(frac->ymax - frac->ymin) / density;
+	frac->x_ratio = floor(frac->mlx.size_x / frac->density);  //! อาจจะต้องกลับมาแก้เป็น round()
+	frac->y_ratio = floor(frac->mlx.size_y / frac->density);
+	frac->complx.real_ratio = fabs(frac->xmax - frac->xmin) / frac->density;
+	frac->complx.imag_ratio = fabs(frac->ymax - frac->ymin) / frac->density;
 	random_complx(frac, frac->xmin, frac->ymin);
 }

@@ -6,7 +6,7 @@
 /*   By: ppoti <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 12:42:53 by ppoti             #+#    #+#             */
-/*   Updated: 2023/07/17 01:12:14 by ppoti            ###   ########.fr       */
+/*   Updated: 2023/07/25 13:16:35 by ppoti            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	frac_init(t_fractol *frac)
 
 void	set_map(t_fractol *frac, int ac, char **av)
 {
-	if (ac == 2 && av[1][0] == '0')
+	if (ac == 2 && ft_strncmp(av[1], "0", ft_strlen(av[1])) == 0)
 		frac->map = 0;
 	else
 	{
